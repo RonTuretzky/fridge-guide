@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fridge Guide</title>
+  <style>
+    @page { size: A4; margin: 0; }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto;
+      padding: 14mm 16mm;
+      color: #2d3748;
+      line-height: 1.4;
+      font-size: 11pt;
+      -webkit-text-size-adjust: 100%;
+      background: #fff;
+    }
+
+    /* ---- Header ---- */
+    .header {
+      text-align: center;
+      margin-bottom: 10mm;
+    }
+    .header h1 {
+      font-size: 28pt;
+      font-weight: 800;
+      color: #1a56db;
+      margin: 0;
+      letter-spacing: -0.5px;
+    }
+    .header .icon { font-size: 36pt; }
+    .header p {
+      font-size: 10pt;
+      color: #718096;
+      margin-top: 2mm;
+    }
+
+    /* ---- Grid ---- */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5mm;
+    }
+    .card {
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 5mm;
+      break-inside: avoid;
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 3mm;
+      margin-bottom: 3mm;
+      padding-bottom: 2mm;
+      border-bottom: 2px solid #edf2f7;
+    }
+    .card-icon {
+      font-size: 22pt;
+      line-height: 1;
+    }
+    .card-title {
+      font-size: 13pt;
+      font-weight: 700;
+      color: #1a56db;
+    }
+
+    /* Card color accents */
+    .card--label  { border-color: #c3dafe; background: #ebf5ff; }
+    .card--clean  { border-color: #fde68a; background: #fffbeb; }
+    .card--freeze { border-color: #bfdbfe; background: #eff6ff; }
+    .card--where  { border-color: #c6f6d5; background: #f0fff4; }
+
+    /* ---- Steps ---- */
+    .steps {
+      list-style: none;
+      padding: 0;
+    }
+    .steps li {
+      display: flex;
+      align-items: flex-start;
+      gap: 2.5mm;
+      margin-bottom: 2mm;
+      font-size: 10pt;
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #1a56db;
+      color: #fff;
+      font-size: 9pt;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+    }
+    .card--clean .step-num { background: #d97706; }
+    .card--freeze .step-num { background: #2563eb; }
+
+    /* ---- Label example ---- */
+    .label-example {
+      border: 2px dashed #93c5fd;
+      border-radius: 8px;
+      padding: 3mm 4mm;
+      margin: 3mm 0 1mm;
+      background: #fff;
+      text-align: center;
+      font-size: 10pt;
+    }
+    .label-example .tape {
+      display: inline-block;
+      background: repeating-linear-gradient(
+        45deg, transparent, transparent 3px, rgba(0,0,0,0.04) 3px, rgba(0,0,0,0.04) 6px
+      );
+      border: 1px solid #cbd5e0;
+      border-radius: 4px;
+      padding: 2mm 5mm;
+      font-family: "Courier New", monospace;
+      font-weight: 700;
+      font-size: 12pt;
+      letter-spacing: 0.5px;
+    }
+
+    /* ---- Location cards ---- */
+    .locations {
+      display: flex;
+      gap: 3mm;
+    }
+    .loc {
+      flex: 1;
+      background: #fff;
+      border: 1.5px solid #c6f6d5;
+      border-radius: 8px;
+      padding: 3mm;
+      text-align: center;
+    }
+    .loc-icon { font-size: 26pt; line-height: 1.1; }
+    .loc-name { font-weight: 700; font-size: 9.5pt; margin-top: 1mm; }
+    .loc-detail { font-size: 8.5pt; color: #718096; }
+    .loc-items {
+      font-size: 8pt;
+      color: #4a5568;
+      margin-top: 1mm;
+    }
+
+    /* ---- Bottom banner ---- */
+    .banner {
+      margin-top: 5mm;
+      background: #1a56db;
+      color: #fff;
+      border-radius: 10px;
+      padding: 4mm 6mm;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4mm;
+      text-align: center;
+    }
+    .banner .icon { font-size: 20pt; }
+    .banner p { font-size: 10pt; font-weight: 600; }
+
+    /* ---- Quick ref strip ---- */
+    .quick-strip {
+      margin-top: 4mm;
+      display: flex;
+      gap: 3mm;
+      flex-wrap: wrap;
+    }
+    .qs {
+      flex: 1 1 0;
+      min-width: 25%;
+      background: #f7fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 2.5mm 3mm;
+      text-align: center;
+    }
+    .qs-icon { font-size: 16pt; line-height: 1; }
+    .qs-val { font-size: 14pt; font-weight: 800; color: #1a56db; }
+    .qs-label { font-size: 7.5pt; color: #718096; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* ---- Mobile ---- */
+    @media screen and (max-width: 600px) {
+      body { width: 100%; min-height: auto; padding: 4mm; font-size: 10pt; }
+      .header h1 { font-size: 22pt; }
+      .grid { grid-template-columns: 1fr; }
+      .locations { flex-direction: column; }
+      .quick-strip { flex-wrap: wrap; }
+      .qs { min-width: 45%; }
+    }
+
+    /* ---- Print ---- */
+    @media print {
+      body { width: 210mm; padding: 14mm 16mm; }
+      .card { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="icon">&#x1F9CA;</div>
+    <h1>Fridge Guide</h1>
+    <p>Label it or lose it &mdash; keep our kitchens clean and organized</p>
+  </div>
+
+  <!-- Main grid -->
+  <div class="grid">
+
+    <!-- 1. Labeling -->
+    <div class="card card--label">
+      <div class="card-header">
+        <span class="card-icon">&#x1F3F7;&#xFE0F;</span>
+        <span class="card-title">Label Every Item</span>
+      </div>
+      <ol class="steps">
+        <li><span class="step-num">1</span> Grab <strong>tape</strong> + <strong>permanent marker</strong></li>
+        <li><span class="step-num">2</span> Write your <strong>name</strong> and <strong>date</strong> (MM/DD)</li>
+        <li><span class="step-num">3</span> Stick the label where it's <strong>easy to see</strong></li>
+      </ol>
+      <div class="label-example">
+        <div class="tape">Chico &ensp; 04/15</div>
+      </div>
+    </div>
+
+    <!-- 2. Weekly cleanout -->
+    <div class="card card--clean">
+      <div class="card-header">
+        <span class="card-icon">&#x1F5D1;&#xFE0F;</span>
+        <span class="card-title">Weekly Fridge Cleanout</span>
+      </div>
+      <ol class="steps">
+        <li><span class="step-num">1</span> <strong>Every Friday</strong> &mdash; all fridges are checked</li>
+        <li><span class="step-num">2</span> Items <strong>older than 7 days</strong> get tossed</li>
+        <li><span class="step-num">3</span> <strong>No label = thrown out immediately</strong><br>(no warnings given)</li>
+        <li><span class="step-num">4</span> Shelves wiped down after removal</li>
+      </ol>
+    </div>
+
+    <!-- 3. Freezer -->
+    <div class="card card--freeze">
+      <div class="card-header">
+        <span class="card-icon">&#x2744;&#xFE0F;</span>
+        <span class="card-title">Freezer Protocol</span>
+      </div>
+      <ol class="steps">
+        <li><span class="step-num">1</span> Same label rules &mdash; <strong>name + date</strong></li>
+        <li><span class="step-num">2</span> Max storage: <strong>3 months</strong></li>
+        <li><span class="step-num">3</span> Use <strong>freezer-safe</strong> containers or bags</li>
+        <li><span class="step-num">4</span> Don't overpack &mdash; air needs to circulate</li>
+        <li><span class="step-num">5</span> Cleanout: <strong>1st Friday of each month</strong></li>
+      </ol>
+    </div>
+
+    <!-- 4. Locations -->
+    <div class="card card--where">
+      <div class="card-header">
+        <span class="card-icon">&#x1F4CD;</span>
+        <span class="card-title">Our Fridges &amp; Freezers</span>
+      </div>
+      <div class="locations">
+        <div class="loc">
+          <div class="loc-icon">&#x26EA;</div>
+          <div class="loc-name">Convent Kitchen</div>
+          <div class="loc-items">&#x1F9CA; Fridge &ensp; &#x2744;&#xFE0F; Freezer</div>
+        </div>
+        <div class="loc">
+          <div class="loc-icon">&#x1F3AD;</div>
+          <div class="loc-name">Auditorium Kitchen</div>
+          <div class="loc-items">&#x1F9CA; Fridge &ensp; &#x2744;&#xFE0F; Freezer</div>
+        </div>
+      </div>
+      <p style="text-align:center; font-size:8.5pt; color:#718096; margin-top:3mm;">
+        Same rules apply to <strong>all</strong> fridges and freezers
+      </p>
+    </div>
+
+  </div>
+
+  <!-- Quick reference numbers -->
+  <div class="quick-strip">
+    <div class="qs">
+      <div class="qs-icon">&#x1F4C6;</div>
+      <div class="qs-val">7 days</div>
+      <div class="qs-label">Max fridge storage</div>
+    </div>
+    <div class="qs">
+      <div class="qs-icon">&#x2744;&#xFE0F;</div>
+      <div class="qs-val">3 months</div>
+      <div class="qs-label">Max freezer storage</div>
+    </div>
+    <div class="qs">
+      <div class="qs-icon">&#x1F4C5;</div>
+      <div class="qs-val">Fridays</div>
+      <div class="qs-label">Fridge cleanout day</div>
+    </div>
+    <div class="qs">
+      <div class="qs-icon">&#x1F6AB;</div>
+      <div class="qs-val">No label?</div>
+      <div class="qs-label">Tossed immediately</div>
+    </div>
+  </div>
+
+  <!-- Bottom banner -->
+  <div class="banner">
+    <span class="icon">&#x26A0;&#xFE0F;</span>
+    <p>Label it or lose it &mdash; no exceptions, no warnings</p>
+    <span class="icon">&#x26A0;&#xFE0F;</span>
+  </div>
+
+</body>
+</html>
